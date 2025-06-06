@@ -1,0 +1,65 @@
+﻿@rendermode @(RenderMode.InteractiveServer)
+
+<div>
+    @if(MspResponse_Attitude is not null)
+    {
+        <div>Yaw: @(MspResponse_Attitude.Yaw)&deg;</div>
+        <div>Roll: @(MspResponse_Attitude.Roll / 10).@int.Abs(MspResponse_Attitude.Roll % 10)&deg;</div>
+        <div>Pitch: @(MspResponse_Attitude.Pitch / 10).@int.Abs(MspResponse_Attitude.Pitch % 10)&deg;</div>
+    }
+    else
+    {
+        <p>Loading...</p>
+    }
+    <div>----------</div>
+    @if(MspResponse_Altitude is not null)
+    {
+        <div>EstimatedAltitude: @(MspResponse_Altitude.EstimatedAltitude)cm</div>
+        <div>EstimatedVerticalVelocity: @(MspResponse_Altitude.EstimatedVerticalVelocity)cm/s</div>
+    }
+    else
+    {
+        <p>Loading...</p>
+    }
+    <div>----------</div>
+    <div>Ping: @(Ping.TotalMilliseconds)ms</div>
+</div>
+
+@code
+{
+    private MspMqttClient? MspClient { get; set; }
+    private TimeSpan Ping { get; set; } = TimeSpan.Zero;
+    private MspResponse_Attitude? MspResponse_Attitude { get; set; }
+    private MspResponse_Altitude? MspResponse_Altitude { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MspClient = await MspMqttClient.CreateAndConnectAsync(new MqttClientFactory());
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender is true)
+        {
+            new Thread(async delegate()
+            {
+                while(true)
+                {
+                    long timestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                    IMspRequest request = IMspRequest.Create(MspCommand.ATTITUDE);
+                    MspResponse_Attitude = await (MspClient?.SendAsync(request) ?? Task.FromResult<IMspResponse?>(null)) as MspResponse_Attitude;
+                    Ping = System.Diagnostics.Stopwatch.GetElapsedTime(timestamp);
+                    await InvokeAsync(StateHasChanged);
+                }
+            }).Start();
+            new Thread(async delegate()
+            {
+                while(true)
+                {
+                    IMspRequest request = IMspRequest.Create(MspCommand.ALTITUDE);
+                    MspResponse_Altitude = await (MspClient?.SendAsync(request) ?? Task.FromResult<IMspResponse?>(null)) as MspResponse_Altitude;
+                    await InvokeAsync(StateHasChanged);
+                }
+            }).Start();
+        }
+    }
+}

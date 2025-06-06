@@ -92,8 +92,13 @@ public class MspMqttClient(MqttClientFactory factory)
     /// <returns>A task that completes with the MSP response, or null if timed out.</returns>
     public Task<IMspResponse?> SendAsync(IMspRequest mspRequest)
     {
+        if(MqttClient.IsConnected is false)
+        {
+            MqttClient.ReconnectAsync();
+        }
         mspRequest.Data.InitChecksum();
         mspRequest.Data.MessageID = RequestRegistry.AddNew(out var task);
+        while(MqttClient.IsConnected is false) ;
         MqttClient.PublishBinaryAsync("flight_controller/request", mspRequest.Data.Data);
         return task;
     }

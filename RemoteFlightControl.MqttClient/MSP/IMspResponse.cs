@@ -24,6 +24,10 @@ public interface IMspResponse
             {
                 return new MspResponse_Attitude(payload_x);
             }
+            case MspCommand.ALTITUDE:
+            {
+                return new MspResponse_Altitude(payload_x);
+            }
             default:
             {
                 throw new NotImplementedException();

@@ -12,7 +12,7 @@ public class MspResponse_Attitude(PayloadX payload_x) : IMspResponse
     public PayloadX Data => payload_x;
 
     /// <summary>
-    /// Roll angle in tenths of a degree
+    /// Roll angle in tenths of a degree (-1800 <=> 1800)
     /// </summary>
     public short Roll
     {
@@ -24,7 +24,7 @@ public class MspResponse_Attitude(PayloadX payload_x) : IMspResponse
     }
 
     /// <summary>
-    /// Pitch angle in tenths of a degree
+    /// Pitch angle in tenths of a degree (-90 <=> 90)
     /// </summary>
     public short Pitch
     {
@@ -36,7 +36,7 @@ public class MspResponse_Attitude(PayloadX payload_x) : IMspResponse
     }
 
     /// <summary>
-    /// Yaw angle in tenths of a degree
+    /// Yaw angle in a degree (0 <=> 360)
     /// </summary>
     public short Yaw
     {

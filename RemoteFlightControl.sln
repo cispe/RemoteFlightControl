@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFlightControl.MqttCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFlightControl.Console", "RemoteFlightControl.Console\RemoteFlightControl.Console.csproj", "{14CB2E23-A873-47EE-AB6E-4D2F19CCCAB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFlightControl.RCL", "RemoteFlightControl.RCL\RemoteFlightControl.RCL.csproj", "{F6110E25-C891-460E-9F04-BC0B9112A87B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFlightControl.BrazorWeb", "RemoteFlightControl.BrazorWeb\RemoteFlightControl.BrazorWeb.csproj", "{03780376-B886-410E-8375-F4663B4B1FE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{14CB2E23-A873-47EE-AB6E-4D2F19CCCAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14CB2E23-A873-47EE-AB6E-4D2F19CCCAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14CB2E23-A873-47EE-AB6E-4D2F19CCCAB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6110E25-C891-460E-9F04-BC0B9112A87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6110E25-C891-460E-9F04-BC0B9112A87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6110E25-C891-460E-9F04-BC0B9112A87B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6110E25-C891-460E-9F04-BC0B9112A87B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03780376-B886-410E-8375-F4663B4B1FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03780376-B886-410E-8375-F4663B4B1FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03780376-B886-410E-8375-F4663B4B1FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03780376-B886-410E-8375-F4663B4B1FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
