@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RemoteFlightControl.FlightController
+namespace RemoteFlightControl.ESP32
 {
     
     internal partial class Resources
@@ -20,7 +20,7 @@ namespace RemoteFlightControl.FlightController
             {
                 if ((Resources.manager == null))
                 {
-                    Resources.manager = new System.Resources.ResourceManager("RemoteFlightControl.FlightController.Resources", typeof(Resources).Assembly);
+                    Resources.manager = new System.Resources.ResourceManager("RemoteFlightControl.ESP32.Resources", typeof(Resources).Assembly);
                 }
                 return Resources.manager;
             }
@@ -32,7 +32,7 @@ namespace RemoteFlightControl.FlightController
         [System.SerializableAttribute()]
         internal enum BinaryResources : short
         {
-            Cert = -5048,
+            HiveCert = -18859,
         }
     }
 }
