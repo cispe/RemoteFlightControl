@@ -24,7 +24,7 @@ namespace RemoteFlightControl.ESP32
             lock(queue)
             {
                 object item = queue.Dequeue();
-                if(queue.Count == 0)
+                if(queue.Count is 0)
                 {
                     non_empty_signal.Reset();
                 }

@@ -1,12 +1,7 @@
 #nullable enable
 
-using System;
-using System.IO.Ports;
 using System.Threading;
-using nanoFramework.M2Mqtt;
 using nanoFramework.Networking;
-using nanoFramework.Hardware.Esp32;
-using System.Security.Cryptography.X509Certificates;
 
 namespace RemoteFlightControl.ESP32
 {
