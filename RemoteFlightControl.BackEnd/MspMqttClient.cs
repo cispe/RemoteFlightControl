@@ -52,6 +52,12 @@ public class MspMqttClient
         MqttClientFactory factory = new();
         MqttClientOptionsBuilder builder = factory.CreateClientOptionsBuilder();
         builder.WithTcpServer("2184fd25ec7349aca4e1d88598347238.s1.eu.hivemq.cloud", 8883);
+        builder.WithTlsOptions(tls =>
+        {
+            tls.UseTls();
+            tls.WithAllowUntrustedCertificates();
+            tls.WithSslProtocols(System.Security.Authentication.SslProtocols.Tls12);
+        });
         builder.WithClientId(ClientId);
         builder.WithCredentials("CS-MC", "CS-MCx00");
         builder.WithNoKeepAlive();

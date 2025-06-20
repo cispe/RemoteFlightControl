@@ -1,9 +1,15 @@
-﻿namespace RemoteFlightControl.BackEnd.Msp;
+﻿using RemoteFlightControl.BackEnd.Msp.Requests;
+
+namespace RemoteFlightControl.BackEnd.Msp;
 
 public interface IMspRequest : IEnumerable<byte>
 {
     public static IMspRequest Create(MspCommand command)
     {
-        throw new NotImplementedException("IMspRequest not implemented");
+        return command switch
+        {
+            MspCommand.GetApiVersion => new MspRequest_GetApiVersion(),
+            _ => throw new NotImplementedException()
+        };
     }
 }
