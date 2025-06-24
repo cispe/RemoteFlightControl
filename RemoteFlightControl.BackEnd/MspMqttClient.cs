@@ -13,7 +13,7 @@ public class MspMqttClient
     private readonly Dictionary<byte, TaskCompletionSource<IMspResponse?>[]> MessageDictionary = [];
     private byte MessageId = 0;
 
-    public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(2);
+    public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(5);
 
     public event Action<MspMqttClient, MspClient>? NewClientFound;
 
@@ -73,17 +73,9 @@ public class MspMqttClient
                     return;
                 }
                 string device_id = event_args.ApplicationMessage.ConvertPayloadToString();
-                if(AvailableDevices.FirstOrDefault(client => client.DeviceId == device_id) is MspClient client)
-                {
-                    client.OnlineConfirmed();
-                }
-                else
-                {
-                    client = new MspClient(device_id, this);
-                    AvailableDevices.Add(client);
-                    client.OnlineConfirmed();
-                    NewClientFound?.Invoke(this, client);
-                }
+                MspClient client = new(device_id, this);
+                AvailableDevices.Add(client);
+                NewClientFound?.Invoke(this, client);
             }
         };
         InternalClient.ApplicationMessageReceivedAsync += delegate(MqttApplicationMessageReceivedEventArgs event_args)
@@ -106,7 +98,7 @@ public class MspMqttClient
                 {
                     return;
                 }
-                for(int index = 1, task_index = 0; index < task_sources.Length; index += message[index] + 3, task_index++)
+                for(int index = 1, task_index = 0; index < message.Length; index += message[index] + 3, task_index++)
                 {
                     MspData msp_data = new(message, index);
                     IMspResponse response = IMspResponse.Create(msp_data);

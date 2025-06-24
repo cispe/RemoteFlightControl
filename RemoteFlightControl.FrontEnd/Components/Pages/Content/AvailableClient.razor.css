@@ -1,0 +1,22 @@
+﻿.AvailableClient
+{
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-around;
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.AvailableClient:hover
+{
+    filter: brightness(80%);
+    cursor: pointer;
+}
+.AvailableClient:active
+{
+    filter: brightness(60%);
+}

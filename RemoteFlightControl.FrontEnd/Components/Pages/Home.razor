@@ -1,0 +1,49 @@
+﻿@rendermode InteractiveServer
+@page "/"
+
+<div class="Home">
+    <div class="AvailableClientList">
+        <div class="Title">Available Clients</div>
+        @foreach(MspClient client in AvailableClients)
+        {
+            <AvailableClient Client="@client" OnClick=@AvailableClient_OnClick />
+        }
+    </div>
+    <div class="ConnectedClientPanel">
+        <div class="Title">Connected Clients</div>
+        <div class="List">
+            @foreach(MspClient client in ConnectedClients)
+            {
+                <ConnectedClient Client="@client" ClientDisconnected=@DisconnectClient />
+            }
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private readonly MspMqttClient InternalClient = new();
+    private readonly List<MspClient> AvailableClients = [];
+    private readonly List<MspClient> ConnectedClients = [];
+
+    private void AvailableClient_OnClick(MspClient client)
+    {
+        ConnectedClients.Add(client);
+        InvokeAsync(StateHasChanged);
+    }
+    private void DisconnectClient(MspClient client)
+    {
+        ConnectedClients.Remove(client);
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        InternalClient.NewClientFound += delegate(MspMqttClient sender, MspClient client)
+        {
+            AvailableClients.Add(client);
+            InvokeAsync(StateHasChanged);
+        };
+        return InternalClient.Start().AsTask();
+    }
+}

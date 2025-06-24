@@ -1,0 +1,14 @@
+﻿@rendermode InteractiveServer
+
+<div class="AvailableClient" @onclick=@AvailableClient_OnClick>@Client.DeviceId</div>
+
+@code
+{
+    [Parameter] public required MspClient Client { get; set; }
+    [Parameter] public required EventCallback<MspClient> OnClick { get; set; }
+
+    private async Task AvailableClient_OnClick()
+    {
+        await OnClick.InvokeAsync(Client);
+    }
+}

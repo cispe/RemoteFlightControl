@@ -1,0 +1,57 @@
+﻿.Home
+{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: row nowrap;
+}
+.Home > .AvailableClientList
+{
+    width: 350px;
+    height: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    border-right: 1px solid black;
+}
+.Home > .AvailableClientList > .Title
+{
+    width: 100%;
+    height: auto;
+
+    text-align: center;
+    border-bottom: 1px solid black;
+    background-color: yellowgreen;
+}
+.Home > .ConnectedClientPanel
+{
+    width: calc(100% - 350px);
+    height: 100%;
+    
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    border-left: 1px solid black;
+}
+.Home > .ConnectedClientPanel > .Title
+{
+    width: 100%;
+    height: auto;
+
+    text-align: center;
+    border-bottom: 1px solid black;
+    background-color: yellowgreen;
+}
+.Home > .ConnectedClientPanel > .List
+{
+    width: 100%;
+    height: auto;
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-flow: row nowrap;
+}

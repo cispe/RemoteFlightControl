@@ -9,6 +9,11 @@ public interface IMspRequest : IEnumerable<byte>
         return command switch
         {
             MspCommand.GetApiVersion => new MspRequest_GetApiVersion(),
+            MspCommand.GetRawImu => new MspRequest_GetRawImu(),
+            MspCommand.GetAttitude => new MspRequest_GetAttitude(),
+            MspCommand.GetAltitude => new MspRequest_GetAltitude(),
+            MspCommand.GetRawGps => new MspRequest_GetRawGps(),
+            MspCommand.GetAnalog => new MspRequest_GetAnalog(),
             _ => throw new NotImplementedException()
         };
     }

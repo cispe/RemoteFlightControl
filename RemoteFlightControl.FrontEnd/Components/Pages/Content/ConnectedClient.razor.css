@@ -1,0 +1,56 @@
+﻿.ConnectedClient
+{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+
+    border: 1px solid black;
+}
+.ConnectedClient > .Title
+{
+    width: 100%;
+    height: auto;
+
+    text-align: center;
+    border-bottom: 1px solid black;
+    background-color: yellowgreen;
+}
+.ConnectedClient > .PropertyList
+{
+    width: 100%;
+    height: auto;
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-flow: column wrap;
+    align-content: space-around;
+    justify-content: space-around;
+}
+.ConnectedClient > .PropertyList > .DataBox
+{
+    width: auto;
+    height: auto;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    border: 1px solid black;
+}
+.ConnectedClient > .PropertyList > .DataBox > .Title
+{
+    width: 100%;
+    height: auto;
+    text-align: center;
+    border-bottom: 1px solid black;
+    background-color: yellowgreen;
+}
+.ConnectedClient > .PropertyList > .DataBox > .Content
+{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-flow: column wrap;
+}

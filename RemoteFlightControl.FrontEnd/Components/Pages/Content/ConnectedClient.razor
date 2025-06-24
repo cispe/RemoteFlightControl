@@ -1,0 +1,125 @@
+﻿@rendermode InteractiveServer
+
+<div class="ConnectedClient">
+    <div class="Title">@Client.DeviceId</div>
+    <div class="PropertyList">
+        <div class="DataBox">
+            <div class="Title">Ping</div>
+            <div class="Data">
+                <div>Ping: @Ping.TotalMilliseconds</div>
+            </div>
+        </div>
+        @if(RawImu is not null)
+        {
+            <div class="DataBox">
+                <div class="Title">RawImu</div>
+                <div class="Data">
+                    <div>@nameof(RawImu.AccelerationX): @RawImu.AccelerationX</div>
+                    <div>@nameof(RawImu.AccelerationY): @RawImu.AccelerationY</div>
+                    <div>@nameof(RawImu.AccelerationZ): @RawImu.AccelerationZ</div>
+                    <div>@nameof(RawImu.GyroscopeX): @RawImu.GyroscopeX</div>
+                    <div>@nameof(RawImu.GyroscopeY): @RawImu.GyroscopeY</div>
+                    <div>@nameof(RawImu.GyroscopeZ): @RawImu.GyroscopeZ</div>
+                    <div>@nameof(RawImu.MagnitometerX): @RawImu.MagnitometerX</div>
+                    <div>@nameof(RawImu.MagnitometerY): @RawImu.MagnitometerY</div>
+                    <div>@nameof(RawImu.MagnitometerZ): @RawImu.MagnitometerZ</div>
+                </div>
+            </div>
+        }
+        @if(Attitude is not null)
+        {
+            <div class="DataBox">
+                <div class="Title">Attitude</div>
+                <div class="Data">
+                    <div>@nameof(Attitude.Roll): @Attitude.Roll</div>
+                    <div>@nameof(Attitude.Pitch): @Attitude.Pitch</div>
+                    <div>@nameof(Attitude.Yaw): @Attitude.Yaw</div>
+                </div>
+            </div>
+        }
+        @if(Altitude is not null)
+        {
+            <div class="DataBox">
+                <div class="Title">Altitude</div>
+                <div class="Data">
+                    <div>@nameof(Altitude.EstimatedAltitude): @Altitude.EstimatedAltitude</div>
+                    <div>@nameof(Altitude.EstimatedVariation): @Altitude.EstimatedVariation</div>
+                </div>
+            </div>
+        }
+        @if(RawGps is not null)
+        {
+            <div class="DataBox">
+                <div class="Title">RawGps</div>
+                <div class="Data">
+                    <div>@nameof(RawGps.GpsFix): @RawGps.GpsFix</div>
+                    <div>@nameof(RawGps.Latitude): @RawGps.Latitude</div>
+                    <div>@nameof(RawGps.Longtitude): @RawGps.Longtitude</div>
+                    <div>@nameof(RawGps.Altitude): @RawGps.Altitude</div>
+                    <div>@nameof(RawGps.GroundSpeed): @RawGps.GroundSpeed</div>
+                    <div>@nameof(RawGps.GroundDirection): @RawGps.GroundDirection</div>
+                    <div>@nameof(RawGps.PositionDilutionOfPrecision): @RawGps.PositionDilutionOfPrecision</div>
+                </div>
+            </div>
+        }
+        @if(Analog is not null)
+        {
+            <div class="DataBox">
+                <div class="Title">Analog</div>
+                <div class="Data">
+                    <div>@nameof(Analog.LegacyBatteryVoltage): @Analog.LegacyBatteryVoltage</div>
+                    <div>@nameof(Analog.MahDrawn): @Analog.MahDrawn</div>
+                    <div>@nameof(Analog.Rssi): @Analog.Rssi</div>
+                    <div>@nameof(Analog.Amperage): @Analog.Amperage</div>
+                    <div>@nameof(Analog.BatteryVoltage): @Analog.BatteryVoltage</div>
+                </div>
+            </div>
+        }
+    </div>
+    <button class="DisconnectButton" @onclick=@DisconnectButton_Click>Disconnect</button>
+</div>
+
+@code
+{
+    [Parameter] public required MspClient Client { get; set; }
+    [Parameter] public required EventCallback<MspClient> ClientDisconnected { get; set; }
+
+    private MspResponse_GetRawImu? RawImu { get; set; }
+    private MspResponse_GetAttitude? Attitude { get; set; }
+    private MspResponse_GetAltitude? Altitude { get; set; }
+    private MspResponse_GetRawGps? RawGps { get; set; }
+    private MspResponse_GetAnalog? Analog { get; set; }
+    private TimeSpan Ping { get; set; }
+    private bool Disconnected { get; set; }
+
+    private async Task DisconnectButton_Click()
+    {
+        Disconnected = true;
+        await ClientDisconnected.InvokeAsync(Client);
+    }
+    protected override void OnParametersSet()
+    {
+        Task.Run(async delegate
+        {
+            while(Disconnected is false)
+            {
+                long timestamp = Stopwatch.GetTimestamp();
+                Task<IMspResponse?> raw_imu_response = Client.SendReceive(IMspRequest.Create(MspCommand.GetRawImu));
+                Task<IMspResponse?> attitude_response = Client.SendReceive(IMspRequest.Create(MspCommand.GetAttitude));
+                Task<IMspResponse?> altitude_response = Client.SendReceive(IMspRequest.Create(MspCommand.GetAltitude));
+                Task<IMspResponse?> raw_gps_response = Client.SendReceive(IMspRequest.Create(MspCommand.GetRawGps));
+                Task<IMspResponse?> analog_response = Client.SendReceive(IMspRequest.Create(MspCommand.GetAnalog));
+
+                RawImu = await raw_imu_response as MspResponse_GetRawImu;
+                Attitude = await attitude_response as MspResponse_GetAttitude;
+                Altitude = await altitude_response as MspResponse_GetAltitude;
+                RawGps = await raw_gps_response as MspResponse_GetRawGps;
+                Analog = await analog_response as MspResponse_GetAnalog;
+                Ping = Stopwatch.GetElapsedTime(timestamp);
+
+                await InvokeAsync(StateHasChanged);
+            }
+
+        });
+    }
+}
